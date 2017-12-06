@@ -11,25 +11,29 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * 文件服务端处理器
  */
-public class FileServerHandler  extends SimpleChannelInboundHandler<String> {
-	private static final String CR = System.getProperty("line.separator");//换行符
+public class FileServerHandler extends SimpleChannelInboundHandler<String> {
+
+	private static final String CR = System.getProperty("line.separator");
+
 	@Override
-	protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
-		File file = new File(s);
+	protected void channelRead0(ChannelHandlerContext ctx, String msg)
+			throws Exception {
+		File file = new File(msg);
 		if (file.exists()) {
 			if (!file.isFile()) {
-				channelHandlerContext.writeAndFlush("Not a file : " + file + CR);
+				ctx.writeAndFlush("Not a file : " + file + CR);
 				return;
 			}
-			channelHandlerContext.write(file + " " + file.length() + CR);
-			RandomAccessFile randomAccessFile = new RandomAccessFile(s, "r");
+			ctx.write(file + " " + file.length() + CR);
+			RandomAccessFile randomAccessFile = new RandomAccessFile(msg, "r");
 			FileRegion region = new DefaultFileRegion(
 					randomAccessFile.getChannel(), 0, randomAccessFile.length());
-			channelHandlerContext.write(region);
-			channelHandlerContext.writeAndFlush(CR);
+			ctx.write(region);
+			ctx.writeAndFlush(CR);
 			randomAccessFile.close();
 		} else {
-			channelHandlerContext.writeAndFlush("File not found: " + file + CR);
+			ctx.writeAndFlush("File not found: " + file + CR);
 		}
+
 	}
 }
