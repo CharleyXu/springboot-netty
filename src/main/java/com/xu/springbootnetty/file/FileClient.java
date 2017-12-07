@@ -1,6 +1,4 @@
-package com.xu.springbootnetty.client;
-
-import com.xu.springbootnetty.handler.FileClientHandler;
+package com.xu.springbootnetty.file;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,9 +17,6 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
-/**
- * 文件客户端
- */
 public class FileClient {
 	private String host;
 	private int port;
@@ -48,11 +43,10 @@ public class FileClient {
 			b.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast("encoder",
-							new StringEncoder(CharsetUtil.UTF_8));
-					ch.pipeline().addLast("decoder",
-							new StringDecoder(CharsetUtil.UTF_8));
-					ch.pipeline().addLast(new FileClientHandler(dest));
+					ch.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8),
+							new StringDecoder(CharsetUtil.UTF_8),
+							new FileClientHandler(dest)
+							);
 				}
 			});
 
