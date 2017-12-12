@@ -1,9 +1,6 @@
 package com.xu.springbootnetty.file;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
+import com.google.common.base.Charsets;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +13,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class FileClient {
 	private String host;
@@ -56,7 +56,7 @@ public class FileClient {
 
 			// 控制台输入请求的文件路径
 			BufferedReader in = new BufferedReader(new InputStreamReader(
-					System.in));
+					System.in, Charsets.UTF_8));
 			while (true) {
 				channel.writeAndFlush(in.readLine() + "\r\n");
 			}

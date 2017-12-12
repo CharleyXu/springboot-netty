@@ -2,9 +2,10 @@ package com.xu.springbootnetty.file;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import java.io.File;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import java.io.File;
+import java.io.IOException;
 
 public class FileServerHandler extends SimpleChannelInboundHandler<String> {
 	private String serverDest;
@@ -20,7 +21,9 @@ public class FileServerHandler extends SimpleChannelInboundHandler<String> {
 			throws Exception {
 		File file = new File(serverDest);
 		if (!file.exists()) {
-			file.createNewFile();
+			if (!file.createNewFile()) {
+				throw new IOException("can not create file by io exception");
+			}
 		}
 		if (!file.isFile()) {
 			ctx.writeAndFlush("Not a file : " + file + CR);
