@@ -1,7 +1,7 @@
 简易聊天室   使用Netty实现websocket长连接
 
-SpringBoot + WebSocket + Netty + Redis 
+SpringBoot + Netty + Redis 
 
 页面使用thymeleaf模版
 
-Redis保存用户名和ChannelId
+Redis保存用户名和Channel
